@@ -52,3 +52,11 @@ jobs:
         labels: ${{ steps.meta.outputs.labels }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
+
+    - name: Trigger Dokploy deployment
+      if: github.event_name != 'pull_request' && github.ref == 'refs/heads/master'
+      run: |
+        curl -X POST "${{ secrets.DOKPLOY_WEBHOOK_URL }}" \
+          -H "Content-Type: application/json" \
+          -d '{"repository":"${{ github.repository }}","tag":"latest"}' \
+          --fail || echo "Webhook failed but continuing..."
