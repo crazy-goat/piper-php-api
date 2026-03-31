@@ -11,8 +11,13 @@ final class PiperService
 {
     private PiperTTS $piper;
 
+    private const MAX_CACHED_VOICES = 5;
+
     /** @var array<string, LoadedModel> */
     private array $modelCache = [];
+
+    /** @var array<string, int> */
+    private array $cacheAccessOrder = [];
 
     /** @var array<string, array{key: string, name: string, language: string, languageCode: string, quality: string, path: string}> */
     private array $voiceList = [];
@@ -98,17 +103,36 @@ final class PiperService
         return $grouped;
     }
 
+    private function loadModelWithCache(string $voiceKey): LoadedModel
+    {
+        if (isset($this->modelCache[$voiceKey])) {
+            $this->cacheAccessOrder[$voiceKey] = time();
+            return $this->modelCache[$voiceKey];
+        }
+
+        if (count($this->modelCache) >= self::MAX_CACHED_VOICES) {
+            $oldestKey = array_key_first($this->cacheAccessOrder);
+            if ($oldestKey !== null) {
+                unset($this->modelCache[$oldestKey]);
+                unset($this->cacheAccessOrder[$oldestKey]);
+            }
+        }
+
+        $model = $this->piper->loadModel($this->voiceList[$voiceKey]['path'], warmUp: true);
+        $this->modelCache[$voiceKey] = $model;
+        $this->cacheAccessOrder[$voiceKey] = time();
+
+        return $model;
+    }
+
     public function synthesize(string $voiceKey, string $text, float $speed = 1.0): string
     {
         if (!isset($this->voiceList[$voiceKey])) {
             throw new \RuntimeException("Voice not found: {$voiceKey}");
         }
 
-        if (!isset($this->modelCache[$voiceKey])) {
-            $this->modelCache[$voiceKey] = $this->piper->loadModel($this->voiceList[$voiceKey]['path'], warmUp: true);
-        }
-
-        return $this->modelCache[$voiceKey]->speak($text, $speed);
+        $model = $this->loadModelWithCache($voiceKey);
+        return $model->speak($text, $speed);
     }
 
     /**
@@ -120,11 +144,9 @@ final class PiperService
             throw new \RuntimeException("Voice not found: {$voiceKey}");
         }
 
-        if (!isset($this->modelCache[$voiceKey])) {
-            $this->modelCache[$voiceKey] = $this->piper->loadModel($this->voiceList[$voiceKey]['path'], warmUp: true);
-        }
+        $model = $this->loadModelWithCache($voiceKey);
 
-        foreach ($this->modelCache[$voiceKey]->speakStreaming($text, $speed) as $chunk) {
+        foreach ($model->speakStreaming($text, $speed) as $chunk) {
             yield [
                 'pcmData' => $chunk->pcmData,
                 'sampleRate' => $chunk->sampleRate,
