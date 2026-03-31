@@ -7,7 +7,7 @@ return [
     'transport' => 'tcp',
     'context' => [],
     'name' => 'piper-tts',
-    'count' => 1,
+    'count' => 4,
     'user' => '',
     'group' => '',
     'reusePort' => false,
