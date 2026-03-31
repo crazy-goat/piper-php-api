@@ -1,0 +1,36 @@
+# Models - large binary files
+models/
+*.onnx
+*.onnx.json
+
+# Test files
+*.wav
+*.mp3
+*.ogg
+
+# Dependencies
+vendor/
+node_modules/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+workerman.log
+
+# Environment
+.env
+.env.local
+
+# Build artifacts
+dist/
+build/
