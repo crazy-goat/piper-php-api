@@ -28,6 +28,10 @@ COPY download-models.sh ./
 COPY entrypoint.sh ./
 RUN chmod +x entrypoint.sh download-models.sh
 
+# Download voices.json during build
+RUN mkdir -p models && \
+    curl -sL -o models/voices.json https://huggingface.co/rhasspy/piper-voices/resolve/main/voices.json
+
 EXPOSE 8000
 
 ENTRYPOINT ["./entrypoint.sh"]
