@@ -10,6 +10,9 @@
     "require": {
         "crazy-goat/piper-php": "^0.1.8",
         "workerman/webman-framework": "^2.2",
-        "monolog/monolog": "^3.10"
+        "monolog/monolog": "^3.10",
+        "open-telemetry/sdk": "^1.0",
+        "open-telemetry/exporter-otlp": "^1.0",
+        "guzzlehttp/guzzle": "^7.0"
     }
 }

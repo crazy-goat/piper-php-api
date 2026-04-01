@@ -9,6 +9,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 RUN docker-php-ext-install ffi pcntl
 
+RUN pecl install opentelemetry && docker-php-ext-enable opentelemetry
+
 WORKDIR /app
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer

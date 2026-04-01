@@ -7,4 +7,5 @@ bash download-models.sh
 
 # Start webman server
 echo "Starting webman server..."
+export OTEL_PHP_AUTOLOAD_ENABLED=true
 exec php start.php start
