@@ -1,6 +1,6 @@
 # Piper TTS — PHP Text-to-Speech
 
-Text-to-speech web application powered by [Piper](https://github.com/rhasspy/piper) and [piper-php](https://github.com/nunomaduro/piper-php). Runs entirely on PHP with Workerman as the HTTP server — no Node.js or Python backend required. No GPU needed, everything runs on CPU.
+Text-to-speech web application powered by [Piper](https://github.com/rhasspy/piper) and [piper-php](https://github.com/crazy-goat/piper-php). Runs entirely on PHP with Workerman as the HTTP server — no Node.js or Python backend required. No GPU needed, everything runs on CPU.
 
 ## Demo
 
