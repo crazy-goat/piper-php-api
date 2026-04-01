@@ -302,3 +302,50 @@ button.btn-download svg {
   30%, 50%, 70% { transform: translateX(-3px); }
   40%, 60% { transform: translateX(3px); }
 }
+
+.github-corner {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 100;
+  width: 80px;
+  height: 80px;
+  color: var(--text);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.github-corner:hover {
+  color: var(--primary);
+}
+
+.github-corner .corner-bg {
+  fill: var(--surface);
+  stroke: var(--border);
+  stroke-width: 1;
+  transition: fill 0.2s, stroke 0.2s;
+}
+
+.github-corner:hover .corner-bg {
+  fill: var(--primary);
+  stroke: var(--primary);
+}
+
+.github-corner:hover .corner-octo-arm,
+.github-corner:hover .corner-octo-body {
+  fill: var(--bg);
+}
+
+.corner-octo-arm {
+  animation: octocat-wave 560ms ease-in-out;
+}
+
+.github-corner:hover .corner-octo-arm {
+  animation: octocat-wave 560ms ease-in-out;
+}
+
+@keyframes octocat-wave {
+  0%, 100% { transform: rotate(0); }
+  20%, 60% { transform: rotate(-25deg); }
+  40%, 80% { transform: rotate(10deg); }
+}
