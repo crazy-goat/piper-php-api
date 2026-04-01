@@ -1,3 +1,11 @@
+FROM node:22-alpine AS frontend
+
+WORKDIR /frontend
+COPY frontend/package.json frontend/package-lock.json* ./
+RUN npm install
+COPY frontend/ .
+RUN npm run build
+
 FROM php:8.4-cli
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -26,6 +34,8 @@ COPY config/ config/
 COPY support/ support/
 COPY start.php download-models.sh entrypoint.sh ./
 RUN chmod +x entrypoint.sh download-models.sh
+
+COPY --from=frontend /app/view/index.html app/view/index.html
 
 RUN mkdir -p models && \
     curl -sL -o models/voices.json https://huggingface.co/rhasspy/piper-voices/resolve/main/voices.json
