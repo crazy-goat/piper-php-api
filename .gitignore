@@ -34,3 +34,4 @@ workerman.log
 # Build artifacts
 dist/
 build/
+app/view/index.html
